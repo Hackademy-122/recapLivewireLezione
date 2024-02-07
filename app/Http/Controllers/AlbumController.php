@@ -3,16 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
 class AlbumController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index', 'show');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        //la funzione alll ritorna una collection
+        $albums = Album::all();
+        return view('album.index', compact('albums'));
     }
 
     /**
@@ -24,19 +32,11 @@ class AlbumController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Album $album)
     {
-        //
+        return view('album.show', compact('album'));
     }
 
     /**
@@ -44,7 +44,8 @@ class AlbumController extends Controller
      */
     public function edit(Album $album)
     {
-        //
+        $allGenres=Genre::all();
+        return view('album.edit', compact('album', 'allGenres'));
     }
 
     /**
@@ -52,7 +53,18 @@ class AlbumController extends Controller
      */
     public function update(Request $request, Album $album)
     {
-        //
+        //dd($request->all());
+        $album->update([
+            'title' => $request->title,
+            'artist' => $request->artist,
+            'release' => $request->release
+        ]);
+
+        foreach($request->genresSelected as $genre){
+            $album->genres()->attach($genre);
+        }
+
+        return redirect()->route('album_index')->with('message','Album modificato correttamente');
     }
 
     /**
@@ -60,6 +72,12 @@ class AlbumController extends Controller
      */
     public function destroy(Album $album)
     {
-        //
+        foreach ($album->genres as $genre) {
+            $genre->albums()->detach($album->id);
+        }
+
+        $album->delete();
+
+        return redirect()->route('album_index')->with('message','Album cancellato correttamente');
     }
 }

@@ -9,6 +9,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{{route('album_create')}}">Inserisci nuovo album</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{route('album_index')}}">Tutti gli album</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               @auth

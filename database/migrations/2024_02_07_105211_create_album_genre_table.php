@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('album_genre', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('album_id');
-            $table->foreign('album_id')->references('id')->on('albums');
-            $table->unsignedBigInteger('genre_id');
-            $table->foreign('genre_id')->references('id')->on('genres');
+            $table->unsignedBigInteger('album_id')->nullable();
+            $table->foreign('album_id')->references('id')->on('albums')->onDelete('CASCADE');
+            $table->unsignedBigInteger('genre_id')->nullable();
+            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('CASCADE');
             $table->timestamps();
         });
     }

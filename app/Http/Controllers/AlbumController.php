@@ -72,9 +72,9 @@ class AlbumController extends Controller
      */
     public function destroy(Album $album)
     {
-        foreach ($album->genres as $genre) {
-            $genre->albums()->detach($album->id);
-        }
+        // foreach ($album->genres as $genre) {
+        //     $genre->albums()->detach($album->id);
+        // }
 
         $album->delete();
 
